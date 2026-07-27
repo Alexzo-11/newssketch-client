@@ -1,0 +1,116 @@
+/* TinyMCE styles for GPL mode */
+.tox .tox-toolbar__group {
+  padding: 0 4px !important;
+}
+
+.tox .tox-toolbar__primary {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+.dark .tox .tox-toolbar__primary {
+  background: #2d2d2d !important;
+  border-bottom: 1px solid #404040 !important;
+}
+
+.dark .tox .tox-toolbar__group {
+  background: #2d2d2d !important;
+}
+
+.dark .tox .tox-tbtn {
+  color: #e0e0e0 !important;
+}
+
+.dark .tox .tox-tbtn:hover {
+  background: #404040 !important;
+}
+
+.dark .tox .tox-tbtn--active {
+  background: #404040 !important;
+}
+
+.dark .tox .tox-menubar {
+  background: #2d2d2d !important;
+  border-bottom: 1px solid #404040 !important;
+}
+
+.dark .tox .tox-mbtn {
+  color: #e0e0e0 !important;
+}
+
+.dark .tox .tox-mbtn:hover {
+  background: #404040 !important;
+}
+/* TinyMCE Editor Styles */
+.editor-container {
+  position: relative;
+}
+
+.editor-container .tox {
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.editor-container .tox .tox-toolbar__primary {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.editor-container .tox .tox-menubar {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Dark mode styles */
+.dark .editor-container .tox {
+  border-color: #404040;
+}
+
+.dark .editor-container .tox .tox-toolbar__primary {
+  background: #2d2d2d !important;
+  border-bottom-color: #404040 !important;
+}
+
+.dark .editor-container .tox .tox-menubar {
+  background: #2d2d2d !important;
+  border-bottom-color: #404040 !important;
+}
+
+.dark .editor-container .tox .tox-tbtn {
+  color: #e0e0e0 !important;
+}
+
+.dark .editor-container .tox .tox-tbtn:hover {
+  background: #404040 !important;
+}
+
+.dark .editor-container .tox .tox-tbtn--active {
+  background: #404040 !important;
+}
+
+.dark .editor-container .tox .tox-mbtn {
+  color: #e0e0e0 !important;
+}
+
+.dark .editor-container .tox .tox-mbtn:hover {
+  background: #404040 !important;
+}
+
+.dark .editor-container .tox .tox-edit-area__iframe {
+  background: #1a1a1a !important;
+}
+
+.dark .editor-container .tox .tox-statusbar {
+  background: #2d2d2d !important;
+  border-top-color: #404040 !important;
+  color: #e0e0e0 !important;
+}
+
+.dark .editor-container .tox .tox-statusbar a {
+  color: #e0e0e0 !important;
+}
+
+.dark .editor-container .tox .tox-statusbar a:hover {
+  color: #C5232A !important;
+}

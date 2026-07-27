@@ -70,7 +70,7 @@ body {
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Scrollbar */
+/* Scrollbar
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -86,25 +86,7 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a01d23;
-}
-html,
-body {
-  height: 100%;
-}
-
-#__next {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1 0 auto;
-}
-
-footer {
-  flex-shrink: 0;
-}
+} */
 /* Fade In Animation */
 @keyframes fadeIn {
   from {
@@ -191,74 +173,24 @@ footer {
   color: #e0e0e0;
 }
 
-/* Footer Spacing - Add space between content and footer */
-footer {
-  margin-top: 2rem;
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Ensure footer doesn't overlap on small screens */
-@media (max-width: 768px) {
-  footer {
-    margin-top: 1.5rem;
-  }
-  
-  footer .container {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
-/* Footer border radius fix */
-footer .rounded-3xl {
-  border-radius: 1.5rem !important;
+::-webkit-scrollbar-thumb {
+  background: #C5232A;
+  border-radius: 4px;
 }
 
-/* Newsletter input focus styles */
-footer input:focus {
-  box-shadow: 0 0 0 3px rgba(197, 35, 42, 0.2);
-}
-/* Prevent footer from overlapping admin sidebar */
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+::-webkit-scrollbar-thumb:hover {
+  background: #a01d23;
 }
 
-main {
-  flex: 1;
+.dark ::-webkit-scrollbar-track {
+  background: #2d2d2d;
 }
-
-/* Admin layout specific - prevent footer overlap */
-.admin-layout main {
-  padding-bottom: 2rem;
-}
-
-/* Ensure footer stays at bottom on admin pages */
-.admin-layout footer {
-  display: none;
-}
-
-/* Fix for admin pages - footer should not appear */
-body:has(.admin-layout) footer {
-  display: none;
-}
-
-/* Ensure proper spacing on all pages */
-footer {
-  margin-top: auto;
-}
-/* Footer link hover animation */
-footer a {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-footer a:not(.no-underline):hover {
-  color: #C5232A;
-}
-
-/* Dark mode footer adjustments */
-.dark footer .bg-gradient-to-r {
-  background: linear-gradient(to right, rgba(197, 35, 42, 0.15), rgba(197, 35, 42, 0.05), transparent);
-}
-
