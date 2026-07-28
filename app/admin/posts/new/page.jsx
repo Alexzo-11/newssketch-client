@@ -37,7 +37,7 @@ export default function NewPost() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // SEO state - removed custom slug
+  // SEO state
   const [seo, setSeo] = useState({
     metaTitle: '',
     metaDescription: ''
@@ -282,7 +282,7 @@ export default function NewPost() {
           )}
         </div>
 
-        {/* SEO Section - Removed Custom Slug */}
+        {/* SEO Section */}
         <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
           <h3 className="text-lg font-semibold font-montserrat text-charcoal dark:text-white mb-4 flex items-center gap-2">
             <FaSearch /> SEO Settings
