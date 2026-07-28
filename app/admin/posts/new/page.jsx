@@ -6,7 +6,51 @@ import { useAuth } from '@/hooks/useAuth';
 import { createPost } from '@/services/post';
 import { getCategories } from '@/services/category';
 import toast from 'react-hot-toast';
+import { Editor as TinyEditor } from '@tinymce/tinymce-react';
+import { useTheme } from 'next-themes';
 
+
+export default function Editor({ value, onChange }) {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const apiKey = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+
+  if (!apiKey) {
+    return (
+      <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 text-red-700 dark:text-red-400 p-4 rounded-lg">
+        <p className="font-bold">⚠️ TinyMCE API Key Missing</p>
+        <p className="text-sm">Please add NEXT_PUBLIC_TINYMCE_API_KEY to your environment variables</p>
+      </div>
+    );
+  }
+
+  return (
+    <TinyEditor
+      apiKey={apiKey}
+      value={value}
+      onEditorChange={onChange}
+      init={{
+        height: 500,
+        menubar: true,
+        plugins: [
+          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+          'preview', 'anchor', 'searchreplace', 'visualblocks', 'code',
+          'fullscreen', 'insertdatetime', 'media', 'table', 'help', 'wordcount',
+          'emoticons'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+          'bold italic underline strikethrough | ' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'bullist numlist outdent indent | ' +
+          'link image media table | removeformat | help',
+        skin: isDark ? 'oxide-dark' : 'oxide',
+        content_css: isDark ? 'dark' : 'default',
+        branding: false,
+        promotion: false,
+      }}
+    />
+  );
+}
 const Editor = dynamic(() => import('@/components/Editor'), { 
   ssr: false,
   loading: () => <div className="h-96 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
