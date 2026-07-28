@@ -7,7 +7,7 @@ import { createPost } from '@/services/post';
 import { getCategories } from '@/services/category';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import { FaArrowLeft, FaUpload, FaTags, FaImage, FaSearch, FaGlobe } from 'react-icons/fa';
+import { FaArrowLeft, FaUpload, FaTags, FaImage, FaSearch } from 'react-icons/fa';
 
 // Dynamically import Editor with no SSR
 const Editor = dynamic(() => import('@/components/Editor'), {
@@ -21,94 +21,6 @@ const Editor = dynamic(() => import('@/components/Editor'), {
     </div>
   )
 });
-
-'use client';
-import { Editor as TinyEditor } from '@tinymce/tinymce-react';
-import { useTheme } from 'next-themes';
-
-export default function Editor({ value, onChange }) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-  
-  // Get API key from environment
-  const apiKey = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
-
-  // If no API key, show error
-  if (!apiKey) {
-    return (
-      <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 text-red-700 dark:text-red-400 p-4 rounded-lg">
-        <p className="font-bold">⚠️ TinyMCE API Key Missing</p>
-        <p className="text-sm">Please add NEXT_PUBLIC_TINYMCE_API_KEY to your environment variables</p>
-      </div>
-    );
-  }
-
-  return (
-    <TinyEditor
-      apiKey={apiKey}
-      value={value}
-      onEditorChange={onChange}
-      init={{
-        height: 500,
-        menubar: true,
-        plugins: [
-          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-          'preview', 'anchor', 'searchreplace', 'visualblocks', 'code',
-          'fullscreen', 'insertdatetime', 'media', 'table', 'help', 'wordcount',
-          'emoticons'
-        ],
-        toolbar: 'undo redo | blocks | ' +
-          'bold italic underline strikethrough | ' +
-          'alignleft aligncenter alignright alignjustify | ' +
-          'bullist numlist outdent indent | ' +
-          'link image media table | removeformat | help',
-        skin: isDark ? 'oxide-dark' : 'oxide',
-        content_css: isDark ? 'dark' : 'default',
-        content_style: `
-          body { 
-            font-family: 'Open Sans', Helvetica, Arial, sans-serif; 
-            font-size: 16px; 
-            line-height: 1.8;
-            color: ${isDark ? '#e0e0e0' : '#3C4043'};
-            background: ${isDark ? '#1a1a1a' : '#FFFFFF'};
-            padding: 20px;
-          }
-          h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
-          h1 { font-size: 32px; font-weight: 700; }
-          h2 { font-size: 26px; font-weight: 700; }
-          h3 { font-size: 22px; font-weight: 600; }
-          a { color: #C5232A; }
-          blockquote { 
-            border-left: 4px solid #C5232A; 
-            padding: 16px 24px; 
-            margin: 16px 0; 
-            background: ${isDark ? '#2d2d2d' : '#f8f9fa'}; 
-            border-radius: 4px;
-            font-style: italic;
-          }
-          img { max-width: 100%; height: auto; border-radius: 8px; }
-          pre { 
-            background: ${isDark ? '#0d0d0d' : '#1a1a1a'}; 
-            color: #e0e0e0; 
-            padding: 16px; 
-            border-radius: 8px; 
-            overflow-x: auto; 
-          }
-          code { 
-            background: ${isDark ? '#2d2d2d' : '#f1f3f4'}; 
-            padding: 2px 6px; 
-            border-radius: 4px; 
-          }
-          table { border-collapse: collapse; width: 100%; }
-          td, th { border: 1px solid #ddd; padding: 8px; }
-          th { background-color: ${isDark ? '#2d2d2d' : '#f2f2f2'}; }
-        `,
-        branding: false,
-        promotion: false,
-      }}
-    />
-  );
-}
 
 export default function NewPost() {
   const { user, loading } = useAuth();
@@ -125,11 +37,10 @@ export default function NewPost() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // SEO state
+  // SEO state - removed custom slug
   const [seo, setSeo] = useState({
     metaTitle: '',
-    metaDescription: '',
-    slug: ''
+    metaDescription: ''
   });
 
   // Redirect if not authenticated
@@ -178,23 +89,6 @@ export default function NewPost() {
     setImagePreview(null);
   };
 
-  // Auto-generate slug from title
-  const generateSlug = (text) => {
-    return text
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  };
-
-  // Handle title change - auto-generate slug if not manually set
-  const handleTitleChange = (e) => {
-    const newTitle = e.target.value;
-    setTitle(newTitle);
-    if (!seo.slug) {
-      setSeo(prev => ({ ...prev, slug: generateSlug(newTitle) }));
-    }
-  };
-
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -223,7 +117,6 @@ export default function NewPost() {
       formData.append('tags', tags.split(',').map(t => t.trim()).filter(t => t));
       formData.append('metaTitle', seo.metaTitle || title);
       formData.append('metaDescription', seo.metaDescription || content.replace(/<[^>]*>/g, '').slice(0, 160));
-      formData.append('slug', seo.slug || generateSlug(title));
 
       if (image) {
         formData.append('image', image);
@@ -283,7 +176,7 @@ export default function NewPost() {
             type="text"
             placeholder="Enter your article title..."
             value={title}
-            onChange={handleTitleChange}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full p-3.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-charcoal dark:text-white text-lg font-medium focus:ring-2 focus:ring-deepCrimson focus:border-transparent transition-all duration-200"
             required
             disabled={isSubmitting}
@@ -389,7 +282,7 @@ export default function NewPost() {
           )}
         </div>
 
-        {/* SEO Section */}
+        {/* SEO Section - Removed Custom Slug */}
         <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
           <h3 className="text-lg font-semibold font-montserrat text-charcoal dark:text-white mb-4 flex items-center gap-2">
             <FaSearch /> SEO Settings
@@ -429,35 +322,6 @@ export default function NewPost() {
               />
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1.5 font-opensans">
                 Recommended: 150-160 characters. Leave empty to auto-generate from content.
-              </p>
-            </div>
-
-            {/* Custom Slug */}
-            <div>
-              <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1.5 font-opensans">
-                <FaGlobe className="inline mr-1.5" /> Custom Slug (URL)
-              </label>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-400 dark:text-gray-500 font-opensans">/article/</span>
-                <input
-                  type="text"
-                  placeholder="custom-url-slug"
-                  value={seo.slug}
-                  onChange={(e) => setSeo({ ...seo, slug: e.target.value })}
-                  className="flex-1 p-3.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-charcoal dark:text-white focus:ring-2 focus:ring-deepCrimson focus:border-transparent transition-all duration-200"
-                  disabled={isSubmitting}
-                />
-                <button
-                  type="button"
-                  onClick={() => setSeo({ ...seo, slug: generateSlug(title) })}
-                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm font-opensans hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 text-charcoal dark:text-white"
-                  disabled={isSubmitting}
-                >
-                  Auto
-                </button>
-              </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1.5 font-opensans">
-                Leave empty to auto-generate from title. Use only lowercase letters, numbers, and hyphens.
               </p>
             </div>
           </div>
