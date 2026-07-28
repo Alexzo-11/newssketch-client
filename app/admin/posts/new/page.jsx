@@ -11,7 +11,8 @@ export default function Editor({ value, onChange }) {
       value={value}
       onEditorChange={onChange}
       init={{
-        license_key: 'gpl', // GPL mode - no API key required!
+        // GPL mode - NO API KEY REQUIRED!
+        license_key: 'gpl',
         height: 500,
         menubar: true,
         plugins: [
