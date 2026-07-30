@@ -164,6 +164,36 @@ export default function MediaLibrary() {
               className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
             >
               {/* Thumbnail */}
+
+
+              // In the video thumbnail section, add error handling
+{video.type === 'youtube' ? (
+  <iframe
+    src={`https://www.youtube.com/embed/${video.youtubeId}`}
+    title={video.title}
+    className="w-full h-full"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+) : (
+  <video
+    src={video.fileUrl}
+    className="w-full h-full object-cover"
+    poster="/video-placeholder.svg"
+    controls
+    onError={(e) => {
+      e.target.style.display = 'none';
+      e.target.parentElement.innerHTML = `
+        <div class="flex items-center justify-center h-full bg-gray-800 text-white">
+          <div class="text-center">
+            <div class="text-4xl mb-2">🎬</div>
+            <p>Video unavailable</p>
+          </div>
+        </div>
+      `;
+    }}
+  />
+)}
               <div className="relative aspect-video bg-gray-900">
                 {video.type === 'youtube' ? (
                   <img
