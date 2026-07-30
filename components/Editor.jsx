@@ -5,20 +5,25 @@ import { useTheme } from 'next-themes';
 export default function Editor({ value, onChange }) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  
+  // Your API key
+  const API_KEY = '8namwa8pblqlfuqnebckps1wcccjag36x3umpnptkmcqsf1d';
 
   return (
     <TinyEditor
+      apiKey={API_KEY}
       value={value}
       onEditorChange={onChange}
       init={{
-        // GPL mode - no API key required
+        // This tells TinyMCE to use GPL mode even on CDN
         license_key: 'gpl',
         height: 500,
         menubar: true,
         plugins: [
           'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
           'preview', 'anchor', 'searchreplace', 'visualblocks', 'code',
-          'fullscreen', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+          'fullscreen', 'insertdatetime', 'media', 'table', 'help', 'wordcount',
+          'emoticons'
         ],
         toolbar: 'undo redo | blocks | ' +
           'bold italic underline strikethrough | ' +
