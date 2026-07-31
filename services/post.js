@@ -32,13 +32,20 @@ export const getPostById = async (id) => {
 
 export const createPost = async (data) => {
   try {
+    console.log('📡 Creating post...');
+    
     const config = data instanceof FormData 
-      ? { headers: { 'Content-Type': 'multipart/form-data' } }
-      : {};
+      ? { 
+          headers: { 'Content-Type': 'multipart/form-data' },
+          timeout: 120000, // 2 minutes for large files
+        }
+      : { timeout: 60000 };
+    
     const res = await api.post('/posts', data, config);
+    console.log('✅ Post created:', res.data);
     return res.data;
   } catch (error) {
-    console.error('Error creating post:', error);
+    console.error('❌ Error creating post:', error.response?.data || error.message);
     throw error;
   }
 };
