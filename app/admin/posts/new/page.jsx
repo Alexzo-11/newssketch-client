@@ -7,7 +7,7 @@ import { createPost } from '@/services/post';
 import { getCategories } from '@/services/category';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import { FaArrowLeft, FaUpload, FaTags, FaImage, FaSearch } from 'react-icons/fa';
+import { FaArrowLeft, FaUpload, FaTags, FaImage, FaSearch, FaStar } from 'react-icons/fa';
 
 // Dynamically import Editor with no SSR
 const Editor = dynamic(() => import('@/components/Editor'), {
@@ -26,6 +26,7 @@ export default function NewPost() {
   const { user, loading } = useAuth();
   const router = useRouter();
   
+  // Form state
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
@@ -35,17 +36,22 @@ export default function NewPost() {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [featured, setFeatured] = useState(false); // NEW: featured state
+  
+  // SEO state
   const [seo, setSeo] = useState({
     metaTitle: '',
     metaDescription: ''
   });
 
+  // Redirect if not authenticated
   useEffect(() => {
     if (!loading && !user) {
       router.push('/admin/login');
     }
   }, [user, loading, router]);
 
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -65,6 +71,7 @@ export default function NewPost() {
     }
   }, [user]);
 
+  // Handle image selection
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -77,11 +84,13 @@ export default function NewPost() {
     }
   };
 
+  // Remove image
   const removeImage = () => {
     setImage(null);
     setImagePreview(null);
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -108,6 +117,7 @@ export default function NewPost() {
       formData.append('tags', tags.split(',').map(t => t.trim()).filter(t => t));
       formData.append('metaTitle', seo.metaTitle || title);
       formData.append('metaDescription', seo.metaDescription || content.replace(/<[^>]*>/g, '').slice(0, 160));
+      formData.append('featured', featured ? 'true' : 'false'); // NEW: add featured to form data
 
       if (image) {
         formData.append('image', image);
@@ -125,6 +135,7 @@ export default function NewPost() {
     }
   };
 
+  // Loading state
   if (loading || isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -156,6 +167,7 @@ export default function NewPost() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Title */}
         <div>
           <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1.5 font-opensans">
             Post Title <span className="text-deepCrimson">*</span>
@@ -171,6 +183,7 @@ export default function NewPost() {
           />
         </div>
 
+        {/* Category & Tags Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1.5 font-opensans">
@@ -215,6 +228,7 @@ export default function NewPost() {
           </div>
         </div>
 
+        {/* Content */}
         <div>
           <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1.5 font-opensans">
             Content <span className="text-deepCrimson">*</span>
@@ -222,6 +236,7 @@ export default function NewPost() {
           <Editor value={content} onChange={setContent} />
         </div>
 
+        {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1.5 font-opensans">
             <FaImage className="inline mr-1.5" /> Featured Image
@@ -267,12 +282,36 @@ export default function NewPost() {
           )}
         </div>
 
+        {/* Featured Story Toggle - NEW */}
+        <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 rounded-xl p-4">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={featured}
+              onChange={(e) => setFeatured(e.target.checked)}
+              className="w-5 h-5 rounded border-gray-300 text-deepCrimson focus:ring-deepCrimson"
+              disabled={isSubmitting}
+            />
+            <div>
+              <span className="font-semibold font-montserrat text-charcoal dark:text-white flex items-center gap-2">
+                <FaStar className="text-yellow-500" />
+                Featured Story
+              </span>
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-opensans">
+                Featured posts appear on the homepage hero section and get more visibility
+              </p>
+            </div>
+          </label>
+        </div>
+
+        {/* SEO Section */}
         <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
           <h3 className="text-lg font-semibold font-montserrat text-charcoal dark:text-white mb-4 flex items-center gap-2">
             <FaSearch /> SEO Settings
           </h3>
 
           <div className="space-y-4">
+            {/* Meta Title */}
             <div>
               <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1.5 font-opensans">
                 Meta Title
@@ -290,6 +329,7 @@ export default function NewPost() {
               </p>
             </div>
 
+            {/* Meta Description */}
             <div>
               <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1.5 font-opensans">
                 Meta Description
@@ -309,6 +349,7 @@ export default function NewPost() {
           </div>
         </div>
 
+        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <button
             type="submit"

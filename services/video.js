@@ -24,9 +24,7 @@ export const uploadVideo = async (formData) => {
   try {
     console.log('📡 Uploading video...');
     const res = await api.post('/videos/upload', formData, {
-      headers: { 
-        'Content-Type': 'multipart/form-data',
-      },
+      headers: { 'Content-Type': 'multipart/form-data' },
       timeout: 300000, // 5 minutes for large videos
     });
     console.log('✅ Video uploaded:', res.data);
@@ -40,7 +38,9 @@ export const uploadVideo = async (formData) => {
 export const addYouTubeVideo = async (data) => {
   try {
     console.log('📡 Adding YouTube video:', data);
-    const res = await api.post('/videos/youtube', data);
+    const res = await api.post('/videos/youtube', data, {
+      timeout: 30000, // 30 seconds
+    });
     console.log('✅ YouTube video added:', res.data);
     return res.data;
   } catch (error) {
