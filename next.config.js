@@ -1,62 +1,3 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   images: {
-//     remotePatterns: [
-//       {
-//         protocol: 'https',
-//         hostname: 'res.cloudinary.com',
-//         port: '',
-//         pathname: '/**',
-//       },
-//     ],
-//   },
-//   // Configure webpack for TinyMCE
-//   webpack: (config) => {
-//     config.module.rules.push({
-//       test: /\.(js|mjs)$/,
-//       include: /node_modules\/tinymce/,
-//       resolve: {
-//         fullySpecified: false,
-//       },
-//     });
-//     return config;
-//   },
-// };
-
-
-
-
-// // module.exports = nextConfig;
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   images: {
-//     remotePatterns: [
-//       {
-//         protocol: 'https',
-//         hostname: 'res.cloudinary.com',
-//         port: '',
-//         pathname: '/**',
-//       },
-//     ],
-//   },
-//   // Add this empty turbopack config to silence the error
-//   turbopack: {},
-//   // Keep your webpack config if needed for production builds
-//   webpack: (config) => {
-//     config.module.rules.push({
-//       test: /\.(js|mjs)$/,
-//       include: /node_modules\/tinymce/,
-//       resolve: {
-//         fullySpecified: false,
-//       },
-//     });
-//     return config;
-//   },
-// };
-
-// module.exports = nextConfig;
-
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -80,10 +21,10 @@ const nextConfig = {
         pathname: '/uploads/**',
       },
     ],
-    // Add this to handle unoptimized images
-    unoptimized: process.env.NODE_ENV === 'production' ? false : true,
+    // Disable image optimization for external images
+    unoptimized: true,
   },
-  // Add rewrites to proxy image requests to your backend
+  // Proxy image requests to your backend
   async rewrites() {
     return [
       {

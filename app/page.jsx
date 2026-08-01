@@ -20,7 +20,7 @@ export default function HomePage() {
       <LatestNews />
       <CategorySection />
       <FeaturedStories />
-      <VideoSection /> {/* Videos appear here */}
+      <VideoSection />
       {/* <Newsletter /> */}
     </div>
   );

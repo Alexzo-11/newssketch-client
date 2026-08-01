@@ -9,7 +9,6 @@ export default function VideoSection() {
   const [videos, setVideos] = useState([]);
   const [featuredVideos, setFeaturedVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -45,7 +44,6 @@ export default function VideoSection() {
 
   return (
     <section className="container mx-auto px-4 py-12">
-      {/* Section Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-3xl font-bold font-montserrat text-charcoal dark:text-white flex items-center gap-3">
@@ -64,7 +62,6 @@ export default function VideoSection() {
         </Link>
       </div>
 
-      {/* Featured Video Highlight */}
       {featuredVideos.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3">
@@ -108,7 +105,6 @@ export default function VideoSection() {
         </div>
       )}
 
-      {/* Video Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {videos.slice(0, 6).map((video, index) => (
           <motion.div
