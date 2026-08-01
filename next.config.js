@@ -69,14 +69,28 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'via.placeholder.com',
+        hostname: 'newssketch-api.onrender.com',
         port: '',
-        pathname: '/**',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/uploads/**',
       },
     ],
-    dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Add this to handle unoptimized images
+    unoptimized: process.env.NODE_ENV === 'production' ? false : true,
+  },
+  // Add rewrites to proxy image requests to your backend
+  async rewrites() {
+    return [
+      {
+        source: '/uploads/:path*',
+        destination: 'https://newssketch-api.onrender.com/uploads/:path*',
+      },
+    ];
   },
   // Configure Turbopack to handle TinyMCE
   turbopack: {
