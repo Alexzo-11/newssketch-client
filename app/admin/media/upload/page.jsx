@@ -71,7 +71,8 @@ export default function UploadVideo() {
       router.push('/admin/media');
     } catch (error) {
       console.error('Error:', error);
-      toast.error(error.response?.data?.message || 'Failed to upload video');
+      const message = error.response?.data?.message || 'Failed to upload video';
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -161,7 +162,7 @@ export default function UploadVideo() {
             <label className="block text-sm font-medium text-charcoal dark:text-gray-300 mb-1">
               Video File *
             </label>
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-8 text-center hover:border-deepCrimson transition-all duration-300">
+            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:border-deepCrimson transition-all duration-300">
               {previewUrl ? (
                 <div>
                   <video

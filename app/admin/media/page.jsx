@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { getVideos, deleteVideo } from '@/services/video';
-import { FaVideo, FaYoutube, FaTrash, FaEdit, FaPlay, FaUpload, FaPlus } from 'react-icons/fa';
+import { FaVideo, FaYoutube, FaTrash, FaPlay, FaUpload, FaPlus } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function MediaLibrary() {
@@ -51,11 +50,6 @@ export default function MediaLibrary() {
     }
   };
 
-  // Handle video error - show placeholder
-  const handleVideoError = (e) => {
-    e.target.src = '/video-placeholder.svg';
-  };
-
   if (loading || isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -76,21 +70,21 @@ export default function MediaLibrary() {
             📹 Media Library
           </h1>
           <p className="text-gray-500 dark:text-gray-400 font-opensans mt-1">
-            Manage your videos and YouTube content
+            Manage your uploaded videos and YouTube content
           </p>
         </div>
         <div className="flex gap-3">
           <Link
-            href="/admin/media/upload"
+            href="/admin/media/upload?type=youtube"
             className="bg-deepCrimson text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition-all duration-300 flex items-center gap-2"
           >
-            <FaUpload /> Upload Video
+            <FaYoutube /> Add YouTube Video
           </Link>
           <Link
-            href="/admin/media/upload?type=youtube"
+            href="/admin/media/upload"
             className="bg-charcoal text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-all duration-300 flex items-center gap-2"
           >
-            <FaPlus /> Add YouTube
+            <FaUpload /> Upload Video
           </Link>
         </div>
       </div>
@@ -137,20 +131,20 @@ export default function MediaLibrary() {
             No Videos Yet
           </h3>
           <p className="text-gray-500 dark:text-gray-400 font-opensans mb-6">
-            Upload your first video or add a YouTube link
+            Add your first YouTube video or upload a file
           </p>
           <div className="flex justify-center gap-4">
             <Link
-              href="/admin/media/upload"
-              className="bg-deepCrimson text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-all duration-300"
+              href="/admin/media/upload?type=youtube"
+              className="bg-deepCrimson text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-all duration-300 flex items-center gap-2"
             >
-              Upload Video
+              <FaYoutube /> Add YouTube
             </Link>
             <Link
-              href="/admin/media/upload?type=youtube"
-              className="bg-charcoal text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-all duration-300"
+              href="/admin/media/upload"
+              className="bg-charcoal text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-all duration-300 flex items-center gap-2"
             >
-              Add YouTube
+              <FaUpload /> Upload Video
             </Link>
           </div>
         </div>
@@ -164,36 +158,6 @@ export default function MediaLibrary() {
               className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
             >
               {/* Thumbnail */}
-
-
-              // In the video thumbnail section, add error handling
-{video.type === 'youtube' ? (
-  <iframe
-    src={`https://www.youtube.com/embed/${video.youtubeId}`}
-    title={video.title}
-    className="w-full h-full"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowFullScreen
-  />
-) : (
-  <video
-    src={video.fileUrl}
-    className="w-full h-full object-cover"
-    poster="/video-placeholder.svg"
-    controls
-    onError={(e) => {
-      e.target.style.display = 'none';
-      e.target.parentElement.innerHTML = `
-        <div class="flex items-center justify-center h-full bg-gray-800 text-white">
-          <div class="text-center">
-            <div class="text-4xl mb-2">🎬</div>
-            <p>Video unavailable</p>
-          </div>
-        </div>
-      `;
-    }}
-  />
-)}
               <div className="relative aspect-video bg-gray-900">
                 {video.type === 'youtube' ? (
                   <img
@@ -208,14 +172,35 @@ export default function MediaLibrary() {
                   <video
                     src={video.fileUrl}
                     className="w-full h-full object-cover"
-                    poster="/video-placeholder.svg"
-                    onError={handleVideoError}
+                    poster="/video-placeholder.jpg"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.parentElement.innerHTML = `
+                        <div class="flex items-center justify-center h-full bg-gray-800 text-white">
+                          <div class="text-center">
+                            <div class="text-4xl mb-2">🎬</div>
+                            <p>Video unavailable</p>
+                          </div>
+                        </div>
+                      `;
+                    }}
                   />
                 )}
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                  <button className="bg-deepCrimson/90 text-white p-4 rounded-full hover:bg-deepCrimson transition-all duration-300">
-                    <FaPlay size={24} />
-                  </button>
+                  {video.type === 'youtube' ? (
+                    <a
+                      href={video.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-deepCrimson/90 text-white p-4 rounded-full hover:bg-deepCrimson transition-all duration-300"
+                    >
+                      <FaPlay size={24} />
+                    </a>
+                  ) : (
+                    <button className="bg-deepCrimson/90 text-white p-4 rounded-full hover:bg-deepCrimson transition-all duration-300">
+                      <FaPlay size={24} />
+                    </button>
+                  )}
                 </div>
                 {video.type === 'youtube' && (
                   <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-semibold flex items-center gap-1">
