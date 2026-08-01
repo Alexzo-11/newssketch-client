@@ -7,16 +7,14 @@ import Link from 'next/link';
 
 export default function VideoSection() {
   const [videos, setVideos] = useState([]);
-  const [featuredVideos, setFeaturedVideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
         const data = await getVideos({ limit: 6 });
+        console.log('📹 Videos fetched:', data);
         setVideos(data.videos || []);
-        const featured = (data.videos || []).filter(v => v.featured === true);
-        setFeaturedVideos(featured);
       } catch (error) {
         console.error('Error fetching videos:', error);
       } finally {
@@ -42,6 +40,9 @@ export default function VideoSection() {
     return null;
   }
 
+  // Get featured videos
+  const featuredVideos = videos.filter(v => v.featured === true);
+
   return (
     <section className="container mx-auto px-4 py-12">
       <div className="flex items-center justify-between mb-8">
@@ -54,14 +55,9 @@ export default function VideoSection() {
             Watch our latest video content
           </p>
         </div>
-        <Link
-          href="/videos"
-          className="text-deepCrimson hover:text-red-700 font-semibold font-opensans transition-colors duration-300"
-        >
-          View All →
-        </Link>
       </div>
 
+      {/* Featured Video */}
       {featuredVideos.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3">
@@ -70,7 +66,7 @@ export default function VideoSection() {
               Featured Video
             </span>
           </div>
-          <div className="relative rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer">
+          <div className="relative rounded-2xl overflow-hidden bg-gray-900 group">
             <div className="aspect-video relative">
               <img
                 src={featuredVideos[0].thumbnail || `https://img.youtube.com/vi/${featuredVideos[0].youtubeId}/maxresdefault.jpg`}
@@ -80,7 +76,7 @@ export default function VideoSection() {
                   e.target.src = `https://img.youtube.com/vi/${featuredVideos[0].youtubeId}/hqdefault.jpg`;
                 }}
               />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <a
                   href={`https://www.youtube.com/watch?v=${featuredVideos[0].youtubeId}`}
                   target="_blank"
@@ -105,6 +101,7 @@ export default function VideoSection() {
         </div>
       )}
 
+      {/* Video Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {videos.slice(0, 6).map((video, index) => (
           <motion.div

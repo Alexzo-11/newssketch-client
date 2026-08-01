@@ -21,15 +21,19 @@ const nextConfig = {
         pathname: '/uploads/**',
       },
     ],
-    // Disable image optimization for external images
+    // Allow unoptimized images for external URLs
     unoptimized: true,
   },
-  // Proxy image requests to your backend
+  // Proxy all uploads to Render
   async rewrites() {
     return [
       {
         source: '/uploads/:path*',
         destination: 'https://newssketch-api.onrender.com/uploads/:path*',
+      },
+      {
+        source: '/api/videos/:path*',
+        destination: 'https://newssketch-api.onrender.com/api/videos/:path*',
       },
     ];
   },

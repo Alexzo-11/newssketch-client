@@ -10,23 +10,13 @@ export const getVideos = async (params = {}) => {
   }
 };
 
-export const getVideo = async (id) => {
-  try {
-    const res = await api.get(`/videos/${id}`);
-    return res.data;
-  } catch (error) {
-    console.error('Error fetching video:', error);
-    throw error;
-  }
-};
-
 export const getFeaturedVideos = async () => {
   try {
     const res = await api.get('/videos/featured');
     return res.data;
   } catch (error) {
     console.error('Error fetching featured videos:', error);
-    return [];
+    return null;
   }
 };
 

@@ -40,6 +40,13 @@ export default function HeroSlider() {
     );
   }
 
+  const getImageUrl = (url) => {
+    if (!url) return '/placeholder.svg';
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/uploads/')) return url;
+    return '/placeholder.svg';
+  };
+
   return (
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}
@@ -53,12 +60,16 @@ export default function HeroSlider() {
           <Link href={`/article/${post.slug}`}>
             <div className="relative w-full h-96">
               <Image
-                src={post.image?.url || '/placeholder.svg'}
+                src={getImageUrl(post.image?.url)}
                 alt={post.title}
                 fill
                 sizes="100vw"
                 className="object-cover"
+                unoptimized
                 priority
+                onError={(e) => {
+                  e.currentTarget.src = '/placeholder.svg';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6 text-white">
