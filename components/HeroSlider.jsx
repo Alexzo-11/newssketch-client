@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getPosts } from '@/services/post';
+import { getImageUrl } from '@/lib/imageHelper';
 
 export default function HeroSlider() {
   const [posts, setPosts] = useState([]);
@@ -39,13 +40,6 @@ export default function HeroSlider() {
       </div>
     );
   }
-
-  const getImageUrl = (url) => {
-    if (!url) return '/placeholder.svg';
-    if (url.startsWith('http')) return url;
-    if (url.startsWith('/uploads/')) return url;
-    return '/placeholder.svg';
-  };
 
   return (
     <Swiper

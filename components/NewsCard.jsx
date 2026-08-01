@@ -1,25 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { getImageUrl } from '@/lib/imageHelper';
 
 export default function NewsCard({ post }) {
-  // Ensure image URL is correct
-  const getImageUrl = (url) => {
-    if (!url) return '/placeholder.svg';
-    // If it's already a full URL, use it
-    if (url.startsWith('http')) return url;
-    // If it starts with /uploads/, use the proxy
-    if (url.startsWith('/uploads/')) return url;
-    // Default
-    return '/placeholder.svg';
-  };
+  const imageUrl = getImageUrl(post.image?.url);
 
   return (
     <motion.div whileHover={{ y: -5 }} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
       <Link href={`/article/${post.slug}`}>
         <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
           <Image
-            src={getImageUrl(post.image?.url)}
+            src={imageUrl}
             alt={post.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
