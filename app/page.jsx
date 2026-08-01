@@ -5,7 +5,7 @@ import LatestNews from '@/components/LatestNews';
 import CategorySection from '@/components/CategorySection';
 import FeaturedStories from '@/components/FeaturedStories';
 import VideoSection from '@/components/VideoSection';
-// Remove: import Newsletter from '@/components/Newsletter';
+// import Newsletter from '@/components/Newsletter';
 
 export default function HomePage() {
   return (
@@ -20,8 +20,8 @@ export default function HomePage() {
       <LatestNews />
       <CategorySection />
       <FeaturedStories />
-      <VideoSection />
-      {/* Remove: <Newsletter /> */}
+      <VideoSection /> {/* Videos appear here */}
+      {/* <Newsletter /> */}
     </div>
   );
 }

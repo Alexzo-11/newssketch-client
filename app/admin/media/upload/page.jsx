@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { uploadVideo, addYouTubeVideo } from '@/services/video';
-import { FaUpload, FaYoutube, FaArrowLeft, FaPlay } from 'react-icons/fa';
+import { FaUpload, FaYoutube, FaArrowLeft, FaPlay, FaStar } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 
@@ -17,6 +17,7 @@ export default function UploadVideo() {
   const [description, setDescription] = useState('');
   const [videoFile, setVideoFile] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState('');
+  const [featured, setFeatured] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -52,7 +53,12 @@ export default function UploadVideo() {
           setIsSubmitting(false);
           return;
         }
-        await addYouTubeVideo({ title, description, youtubeUrl });
+        await addYouTubeVideo({ 
+          title, 
+          description, 
+          youtubeUrl,
+          featured 
+        });
         toast.success('🎬 YouTube video added successfully!');
       } else {
         if (!videoFile) {
@@ -64,6 +70,7 @@ export default function UploadVideo() {
         formData.append('title', title);
         formData.append('description', description);
         formData.append('video', videoFile);
+        formData.append('featured', featured ? 'true' : 'false');
         await uploadVideo(formData);
         toast.success('🎬 Video uploaded successfully!');
       }
@@ -209,6 +216,28 @@ export default function UploadVideo() {
             </div>
           </div>
         )}
+
+        {/* Featured Toggle */}
+        <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30 rounded-xl p-4">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={featured}
+              onChange={(e) => setFeatured(e.target.checked)}
+              className="w-5 h-5 rounded border-gray-300 text-deepCrimson focus:ring-deepCrimson"
+              disabled={isSubmitting}
+            />
+            <div>
+              <span className="font-semibold font-montserrat text-charcoal dark:text-white flex items-center gap-2">
+                <FaStar className="text-yellow-500" />
+                Featured Video
+              </span>
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-opensans">
+                Featured videos appear on the homepage highlight section
+              </p>
+            </div>
+          </label>
+        </div>
 
         {/* Submit */}
         <div className="flex gap-4 pt-4">

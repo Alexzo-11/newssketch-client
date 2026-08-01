@@ -20,12 +20,22 @@ export const getVideo = async (id) => {
   }
 };
 
+export const getFeaturedVideos = async () => {
+  try {
+    const res = await api.get('/videos/featured');
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching featured videos:', error);
+    return [];
+  }
+};
+
 export const uploadVideo = async (formData) => {
   try {
     console.log('📡 Uploading video...');
     const res = await api.post('/videos/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
-      timeout: 300000, // 5 minutes for large videos
+      timeout: 300000,
     });
     console.log('✅ Video uploaded:', res.data);
     return res.data;
@@ -39,7 +49,7 @@ export const addYouTubeVideo = async (data) => {
   try {
     console.log('📡 Adding YouTube video:', data);
     const res = await api.post('/videos/youtube', data, {
-      timeout: 30000, // 30 seconds
+      timeout: 30000,
     });
     console.log('✅ YouTube video added:', res.data);
     return res.data;
