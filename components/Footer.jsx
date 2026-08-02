@@ -199,31 +199,37 @@ export default function Footer() {
           {/* Bottom Bar */}
           <div className="border-t border-gray-100 dark:border-gray-700 px-8 py-6 bg-gray-50 dark:bg-gray-900/50">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-opensans">
+              {/* Left side: Copyright */}
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-opensans order-2 md:order-1">
                 &copy; {currentYear} News Sketch. All rights reserved.
               </p>
-              <div className="flex items-center gap-6 text-sm font-opensans">
-                <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
-                  Privacy Policy
-                </Link>
-                <Link href="/terms" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
-                  Terms of Service
-                </Link>
-                <Link href="/cookies" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
-                  Cookies
-                </Link>
-                {/* New: Designed by Alexzo_Graphics with WhatsApp link */}
+              
+              {/* Center: Designed by (moves to bottom on mobile) */}
+              <div className="order-3 md:order-2 w-full md:w-auto text-center">
                 <a
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 transition-all duration-300 group"
+                  className="inline-flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 transition-all duration-300 group"
                 >
                   <FaWhatsapp className="text-green-500 group-hover:scale-110 transition-transform duration-300" />
-                  <span className="hover:underline">
+                  <span className="hover:underline text-sm font-opensans">
                     Designed by <span className="font-semibold">Alexzo_Graphics</span>
                   </span>
                 </a>
+              </div>
+
+              {/* Right side: Legal links */}
+              <div className="flex items-center gap-4 text-sm font-opensans order-1 md:order-3 flex-wrap justify-center">
+                <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
+                  Privacy
+                </Link>
+                <Link href="/terms" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
+                  Terms
+                </Link>
+                <Link href="/cookies" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
+                  Cookies
+                </Link>
               </div>
             </div>
           </div>
