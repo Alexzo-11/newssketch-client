@@ -12,7 +12,8 @@ import {
   FaMapMarkerAlt,
   FaArrowRight,
   FaCheckCircle,
-  FaSpinner
+  FaSpinner,
+  FaWhatsapp
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -29,7 +30,6 @@ export default function Footer() {
       return;
     }
     
-    // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast.error('Please enter a valid email address');
@@ -39,22 +39,10 @@ export default function Footer() {
     setSubscribing(true);
     
     try {
-      // Call your newsletter API endpoint
-      // const res = await fetch('/api/subscribe', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email }),
-      // });
-      // if (!res.ok) throw new Error('Subscription failed');
-      
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
       setSubscribed(true);
       toast.success('🎉 Subscribed successfully!');
       setEmail('');
-      
-      // Reset subscribed state after 3 seconds
       setTimeout(() => setSubscribed(false), 3000);
     } catch (error) {
       toast.error('Failed to subscribe. Please try again.');
@@ -65,13 +53,14 @@ export default function Footer() {
 
   const currentYear = new Date().getFullYear();
 
+  // WhatsApp link with nice message
+  const whatsappLink = `https://wa.me/2348106509069?text=Hi%20Alexzo_Graphics%2C%20I%20love%20the%20News%20Sketch%20design!%20I%27d%20like%20to%20connect%20with%20you.`;
+
   return (
     <footer className="relative mt-16">
-      {/* Decorative top border with gradient */}
       <div className="absolute -top-1 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-deepCrimson to-transparent"></div>
       
       <div className="container mx-auto px-4">
-        {/* Main Footer Content */}
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden">
           
           {/* Newsletter Section */}
@@ -197,7 +186,7 @@ export default function Footer() {
                 </li>
                 <li className="flex items-start gap-3 text-gray-600 dark:text-gray-400">
                   <FaPhone className="text-deepCrimson mt-1 flex-shrink-0" />
-                  <span>+234 (810) 650-9069</span>
+                  <span>+1 (555) 123-4567</span>
                 </li>
                 <li className="flex items-start gap-3 text-gray-600 dark:text-gray-400">
                   <FaMapMarkerAlt className="text-deepCrimson mt-1 flex-shrink-0" />
@@ -213,7 +202,7 @@ export default function Footer() {
               <p className="text-sm text-gray-500 dark:text-gray-400 font-opensans">
                 &copy; {currentYear} News Sketch. All rights reserved.
               </p>
-              <div className="flex gap-6 text-sm font-opensans">
+              <div className="flex items-center gap-6 text-sm font-opensans">
                 <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
                   Privacy Policy
                 </Link>
@@ -223,6 +212,18 @@ export default function Footer() {
                 <Link href="/cookies" className="text-gray-500 dark:text-gray-400 hover:text-deepCrimson dark:hover:text-deepCrimson transition-colors duration-300">
                   Cookies
                 </Link>
+                {/* New: Designed by Alexzo_Graphics with WhatsApp link */}
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 transition-all duration-300 group"
+                >
+                  <FaWhatsapp className="text-green-500 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="hover:underline">
+                    Designed by <span className="font-semibold">Alexzo_Graphics</span>
+                  </span>
+                </a>
               </div>
             </div>
           </div>
